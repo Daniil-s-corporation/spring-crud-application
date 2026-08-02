@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService { // , BeanFactoryPostProcessor, BeanPostProcessor
 
     private final UserDao<User, Long> userDao;
 
@@ -36,4 +36,29 @@ public class UserServiceImpl implements UserService{
     public List<User> findAll() {
         return userDao.findAll();
     }
+
+
+    //Фаза 0: Подготовка (Еще до рождения бинов)
+    //Прежде чем создать хоть один объект, Spring читает аннотации (@Configuration, @Component)
+    //и файлы конфигурации. Он создает BeanDefinition — "чертежи" будущих бинов.
+    //
+    //Интерфейс BeanFactoryPostProcessor
+    //Позволяет тебе вмешаться в эти чертежи до того, как будут созданы сами объекты бинов.
+//    @Override
+//    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+//        BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition("userServiceImpl");
+//        beanDefinition.setScope(BeanDefinition.SCOPE_SINGLETON);
+//   configurableListableBeanFactory.preInstantiateSingletons();
+//    }
+
+
+//    @Override
+//    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+//        return BeanPostProcessor.super.postProcessBeforeInitialization(bean, beanName);
+//    }
+
+//    @Override
+//    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+//        return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
+//    }
 }

@@ -16,5 +16,4 @@ public interface UserDao<T, E> {
     T findById(E id);
 
     List<T> findAll();
-
 }

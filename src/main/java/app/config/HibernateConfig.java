@@ -6,9 +6,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.support.SharedEntityManagerBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+//@Component
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
 public class HibernateConfig {
@@ -27,6 +28,7 @@ public class HibernateConfig {
     }
 
     @Bean
+//    @Scope(value = "prototype")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
@@ -50,6 +52,12 @@ public class HibernateConfig {
         return entityManager;
     }
 
+    @Bean
+    public SharedEntityManagerBean entityManager(EntityManagerFactory entityManagerFactory) {
+        SharedEntityManagerBean entityManager = new SharedEntityManagerBean();
+        entityManager.setEntityManagerFactory(entityManagerFactory);
+        return entityManager;
+    }
 
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
